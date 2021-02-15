@@ -45,21 +45,6 @@ class GameScene: SKScene {
     }
     
     
-    func restart() {
-        score = 0
-        player = SKShapeNode(circleOfRadius: 20)
-        player.fillColor = .green
-        player.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-        player.physicsBody?.affectedByGravity = false
-        player.physicsBody?.categoryBitMask = CategoryMask.categoryMask.rawValue
-        player.physicsBody?.contactTestBitMask = CategoryMask.collisionMask.rawValue
-        player.position = CGPoint(x: size.width/2, y: size.height/2)
-        addChild(player)
-        addEnemy(on: CGPoint(x: CGFloat.random(in: 0...size.width), y: CGFloat.random(in: 0...size.height)))
-        
-    }
-    
-    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
@@ -103,20 +88,16 @@ class GameScene: SKScene {
         super.touchesEnded(touches, with: event)
         if let loc = touches.first?.location(in: view){
             let touchLocation = CGPoint(x: loc.x, y: size.height-loc.y)
-            player.move(to: touchLocation, speed: 120)
+            player.move(to: touchLocation, speed: 150)
         }else{
             print("Cannot get touch")
         }
-        
-        
     }
-    
-    
-    
+
     override func update(_ currentTime: TimeInterval) {
         if let enemy = enemy{
         let targetLocation = player.position
-            enemy.move(to: targetLocation, speed: 60)
+            enemy.move(to: targetLocation, speed: 120)
         }
     }
 }
@@ -131,9 +112,7 @@ extension GameScene: SKPhysicsContactDelegate{
         addChild(explosion!)
         enemyTimer.invalidate()
         scoreTimer.invalidate()
-//        let view = self.view
         _ = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(gameOver), userInfo: nil, repeats: false)
-        
     }
 }
 
