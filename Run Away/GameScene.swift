@@ -110,6 +110,9 @@ extension GameScene: SKPhysicsContactDelegate{
         let explosion = SKEmitterNode(fileNamed: "explosion.sks")
         explosion?.position = contact.contactPoint
         addChild(explosion!)
+        DispatchQueue.main.async{[unowned self] in
+            run(SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false))
+        }
         enemyTimer.invalidate()
         scoreTimer.invalidate()
         _ = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(gameOver), userInfo: nil, repeats: false)
